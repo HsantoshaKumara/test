@@ -1,11 +1,10 @@
 name: My Workflow
 
-
 on:
   workflow_dispatch:
     inputs:
       commit-ID:
-        description: 'enter the commit ID'
+        description: 'Enter the commit ID'
         required: true
         default: '' 
         type: text
@@ -13,21 +12,18 @@ on:
         description: 'Do you want to rename the tag for backup'
         required: true
         default: '' 
-        type: bolean
-env:
-  $1: ${{github.event.inputs.Branch/Commit-ID}}  
-  $2: ${{github.event.inputs.rename}}
+        type: boolean
 
 jobs:
   my-job:
     runs-on: ubuntu-latest
-    
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set executable permission
       run: chmod +x ./script.sh
-      
     - name: Run script
-      run: ./script.sh $1 $2
+      run: |
+        ./script.sh "${{ github.event.inputs.commit-ID }}" "${{ github.event.inputs.rename }}"
+
