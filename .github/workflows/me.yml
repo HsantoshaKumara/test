@@ -11,7 +11,7 @@ on:
       rename:
         description: 'Do you want to rename the tag for backup'
         required: true
-        default: '' 
+        default: 'true' 
         type: boolean
 
 jobs:
