@@ -24,7 +24,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        token: ${{ secrets.secret}}
+        token: ${{ secrets.SECRET}}
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set executable permission
