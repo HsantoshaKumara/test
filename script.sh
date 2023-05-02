@@ -2,8 +2,8 @@
 rm -rf TEMP
 mkdir TEMP
 cd TEMP
-git clone --mirror git@github.com:HsantoshaKumara/test.git
-cd test.git
+#git clone --mirror git@github.com:HsantoshaKumara/test.git
+#cd test.git
 branch_commit_ID="$1"
 if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 
 then echo "branch_commit_ID is not valid"
@@ -44,6 +44,7 @@ git push origin $TEMP
 git checkout $branch_commit_ID
 git clone git@github.com:HsantoshaKumara/test.git
 git checkout $branch_commit_ID
+fi
 git tag -d PROD
 git tag PROD -m "new tag "
 git push origin :refs/tags/PROD
