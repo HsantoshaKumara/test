@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Set executable permission
+      run: chmod +x path/to/myscript.sh
       
     - name: Run script
       run: ./script.sh
