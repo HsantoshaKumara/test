@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 200
     
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
 	  - name: createating tag 
 	    run: bash ${GITHUB_WORKSPACE}/path/script.sh $COMMIT_ID
