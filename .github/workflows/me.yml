@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
 env:
-  branch_commit_ID : ${{github.event.inputs.Branch/Commit-ID}}  
-  ans: ${{github.event.inputs.rename-yes/no}}
+  $1: ${{github.event.inputs.Branch/Commit-ID}}  
+  $2: ${{github.event.inputs.rename-yes/no}}
 
 jobs:
   my-job:
