@@ -15,4 +15,4 @@ jobs:
       run: chmod +x ./script.sh
       
     - name: Run script
-      run: ./script.sh
+      run: ./script.sh $1 $2
