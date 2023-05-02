@@ -10,8 +10,7 @@ on:
         type: text
       rename:
         description: 'Do you want to rename the tag for backup'
-        required: true
-        default: 'true' 
+        required: true 
         type: boolean
 
 jobs:
