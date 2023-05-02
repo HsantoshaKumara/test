@@ -13,7 +13,7 @@ branch_commit_ID="$1"
 git clone --mirror https://github.com/HsantoshaKumara/test.git
 cd test.git
 branch_commit_ID="$1"
-if ! git ls-remote https://${{ secrets.SECRET }}@github.com/USERNAME/REPOSITORY.git | grep -q "$branch_commit_ID"; then
+if ! git ls-remote https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git | grep -q "$branch_commit_ID"; then
   echo "branch_commit_ID is not valid"
   exit 1
 fi
