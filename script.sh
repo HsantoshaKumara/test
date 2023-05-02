@@ -2,8 +2,8 @@
 rm -rf TEMP
 mkdir TEMP
 cd TEMP
-#git clone --mirror git@github.com:HsantoshaKumara/test.git
-#cd test.git
+git clone --mirror git@github.com:HsantoshaKumara/test.git
+cd test.git
 branch_commit_ID="$1"
 if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 
 then echo "branch_commit_ID is not valid"
