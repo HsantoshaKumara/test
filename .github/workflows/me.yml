@@ -11,7 +11,10 @@ on:
       rename:
         description: 'Do you want to rename the tag for backup'
         required: true 
-        type: boolean
+        type: string
+        options:
+          - 'Yes'
+          - 'No'
 
 jobs:
   my-job:
