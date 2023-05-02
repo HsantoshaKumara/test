@@ -42,7 +42,8 @@ echo "tag name name will not be changed"
 fi
 cd ..
 #git clone git@github.com:HsantoshaKumara/test.git
-GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
+git clone https://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@github.com/HsantoshaKumara/test.git
+
 
 cd test
 git checkout $branch_commit_ID
