@@ -3,10 +3,14 @@ name: My Workflow
 on:
   push:
     branches: [ main ]
+env:
+ $1: ${{github.event.inputs.$1}}  
+ $2: ${{github.event.inputs.$2}}
 
 jobs:
   my-job:
     runs-on: ubuntu-latest
+    
 
     steps:
     - name: Checkout code
