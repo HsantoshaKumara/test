@@ -8,6 +8,7 @@ branch_commit_ID="$1"
 if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 
 then echo "branch_commit_ID is not valid"
 exit 1
+fi
 ans="$2"
 while ["ans" != "yes" ] && ["ans" != "no" ]
 do 
