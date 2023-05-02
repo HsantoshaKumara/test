@@ -3,9 +3,22 @@ name: My Workflow
 on:
   push:
     branches: [ main ]
+on:
+  workflow_dispatch:
+    inputs:
+      commit-ID:
+        description: 'enter the commit ID'
+        required: true
+        default: '' 
+        type: text
+      rename:
+        description: 'Do you want to rename the tag for backup'
+        required: true
+        default: '' 
+        type: bolean
 env:
   $1: ${{github.event.inputs.Branch/Commit-ID}}  
-  $2: ${{github.event.inputs.rename-yes/no}}
+  $2: ${{github.event.inputs.rename}}
 
 jobs:
   my-job:
