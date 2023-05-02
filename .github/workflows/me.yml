@@ -24,7 +24,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        token: ${{ secrets.SECRET}}
+        token: ${{ secrets.SECRET }}
     - name: Set executable permission
       run: chmod +x ./script.sh
     - name: Run script
