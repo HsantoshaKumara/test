@@ -1,0 +1,32 @@
+name: github tag
+
+run-name: create tag for commit
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit-ID:
+        description: 'enter the commit ID'
+        required: true
+        default: '' 
+        type: text
+env:
+  COMMIT_ID: ${{github.event.inputs.commit-ID}}        
+      
+
+jobs:
+  
+
+      
+
+  create-tag:
+    
+    
+    runs-on: ubuntu-latest-16-cores
+    timeout-minutes: 200
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+	  - name: createating tag 
+	    run: bash ${GITHUB_WORKSPACE}/path/script.sh $COMMIT_ID
