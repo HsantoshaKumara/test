@@ -29,4 +29,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: creating tag 
-        run: bash ${GITHUB_WORKSPACE}/path/script.sh $COMMIT_ID
+        run: bash ${GITHUB_WORKSPACE}/test/script.sh $COMMIT_ID
