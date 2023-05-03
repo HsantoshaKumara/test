@@ -1,33 +1,67 @@
-name: My Workflow
+name: Create PROD tag
 
 on:
-  workflow_dispatch:
-    inputs:
-      commit-ID:
-        description: 'Enter the commit ID'
-        required: true
-        default: '' 
-        type: text
-      rename:
-        description: 'Do you want to rename the tag for backup'
-        required: true 
-        type: string
-        options:
-          - 'Yes'
-          - 'No'
+  push:
+    branches:
+      - main
 
 jobs:
-  my-job:
+  create-tag:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.SECRET }}
-    - name: Set executable permission
-      run: chmod +x ./script.sh
-    - name: Run script
+    - uses: actions/checkout@v2
+    - name: Run shell script
       run: |
-        ./script.sh "${{ github.event.inputs.commit-ID }}" "${{ github.event.inputs.rename }}"
+        #!/bin/bash
+        rm -rf TEMP
+        mkdir TEMP # Creating the temporary directory
+        cd TEMP # Get inside the directory
+        git init # Initialise the git
+        git clone --mirror git@github.com:HsantoshaKumara/test.git # Create a copy of git repo (all branches,tags & history)
+        cd test.git
+        branch_commit_ID="${{ github.ref }}"
+        if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 #Validates the commit ID or Branch name
+        then
+        echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
+        exit 1
+        fi
+        answer="no"
+        if [ "$answer" == "yes" ]
+        then
+          suffix_name="${{ github.run_number }}"
+          TEMP="PROD-$suffix_name"
+          while git rev-parse --quiet --verify "refs/tags/$TEMP" >/dev/null #Checks if the tag name exists
+          do
+            echo "Error: $TEMP already exists. Please change the suffix name"
+            exit 1
+          done
+          echo "Tag name changing to $TEMP"
+        else
+          echo "Tag will not be renamed"
+        fi
+        cd ..
+        git clone git@github.sec.samsung.net:h-kumara/test.git
+        cd test
+        git checkout $branch_commit_ID
+        if [ "$answer" == "yes" ]
+        then
+          git checkout PROD
+          echo "Renaming the tag name.."
+          git tag -f $TEMP PROD^{}
+          echo "Renamed to $TEMP"
+          echo "Deleting the tag.."
+          git tag -d PROD || true
+          echo "Tag deleted"
+          git push origin $TEMP
+          git checkout $branch_commit_ID
+          git clone git@github.sec.samsung.net:h-kumara/test.git
+          git checkout $branch_commit_ID
+        fi
+        git tag -d PROD
+        git tag PROD -m "New tag is created"
+        git push origin :refs/tags/PROD # delete the tag remotely
+        git push origin PROD
+        echo "PROD tag is created successfully"
+        cd ../..
+        rm -rf TEMP
 
