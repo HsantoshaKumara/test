@@ -1,41 +1,21 @@
-name: Workflow Dispatch
+name: Create PROD tag
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'The branch name'
-        required: true
-      commit_id:
-        description: 'The commit ID'
-        required: true
+  push:
+    branches:
+      - test
 
 jobs:
-  my_job:
+  create-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Check commit ID or branch
-        uses: actions/github-script@v4
-        with:
-         
-          ref: ${{ github.event.inputs.branch }}
-          script: |
-            const ref = process.env.INPUT_BRANCH || process.env.INPUT_COMMIT_ID;
-            const octokit = require('@octokit/rest')();
-            octokit.authenticate({
-              type: 'token',
-              token: process.env.GITHUB_TOKEN
-            });
-            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
-            let sha;
-            try {
-              sha = await octokit.git.getRef({
-                owner: owner,
-                repo: repo,
-                ref: ref
-              });
-              console.log(`Commit ID or branch '${ref}' found: ${sha.data.object.sha}`);
-            } catch (error) {
-              console.log(`Commit ID or branch '${ref}' not found: ${error.message}`);
-              process.exit(1);
-            }
+    - uses: actions/checkout@v2
+      with:
+          ref: ${{ github.event.inputs.test }}
+    - name: Run shell script
+      run: |
+        #!/bin/bash
+        rm -rf TEMP
+        mkdir TEMP # Creating the temporary directory
+        cd TEMP # Get inside the directory
+        git init # Initialise the git
