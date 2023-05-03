@@ -17,7 +17,8 @@ jobs:
         mkdir TEMP # Creating the temporary directory
         cd TEMP # Get inside the directory
         git init # Initialise the git
-        git clone --mirror git@github.com:HsantoshaKumara/test.git # Create a copy of git repo (all branches,tags & history)
+        git clone --mirror GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
+cd test.git # Create a copy of git repo (all branches,tags & history)
         cd test.git
         branch_commit_ID="${{ github.ref }}"
         if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 #Validates the commit ID or Branch name
@@ -40,7 +41,8 @@ jobs:
           echo "Tag will not be renamed"
         fi
         cd ..
-        git clone git@github.sec.samsung.net:h-kumara/test.git
+        GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
+cd test.git
         cd test
         git checkout $branch_commit_ID
         if [ "$answer" == "yes" ]
@@ -54,7 +56,8 @@ jobs:
           echo "Tag deleted"
           git push origin $TEMP
           git checkout $branch_commit_ID
-          git clone git@github.sec.samsung.net:h-kumara/test.git
+          GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
+cd test.git
           git checkout $branch_commit_ID
         fi
         git tag -d PROD
