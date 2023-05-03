@@ -1,67 +1,27 @@
-name: Create PROD tag
+name: Check commit/branch
 
-on:
-  push:
-    branches:
-      - main
+on: [workflow_dispatch]
 
 jobs:
-  create-tag:
+  check-commit-branch:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run shell script
-      run: |
-        #!/bin/bash
-        rm -rf TEMP
-        mkdir TEMP # Creating the temporary directory
-        cd TEMP # Get inside the directory
-        git init # Initialise the git
-        branch_commit_ID="${{ github.ref }}"
-        if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 #Validates the commit ID or Branch name
-        then
-        echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
-        exit 1
-        fi
-        answer="no"
-        if [ "$answer" == "yes" ]
-        then
-          suffix_name="${{ github.run_number }}"
-          TEMP="PROD-$suffix_name"
-          while git rev-parse --quiet --verify "refs/tags/$TEMP" >/dev/null #Checks if the tag name exists
-          do
-            echo "Error: $TEMP already exists. Please change the suffix name"
-            exit 1
-          done
-          echo "Tag name changing to $TEMP"
-        else
-          echo "Tag will not be renamed"
-        fi
-        cd ..
-        git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
-        cd test.git
-        cd test
-        git checkout $branch_commit_ID
-        if [ "$answer" == "yes" ]
-        then
-          git checkout PROD
-          echo "Renaming the tag name.."
-          git tag -f $TEMP PROD^{}
-          echo "Renamed to $TEMP"
-          echo "Deleting the tag.."
-          git tag -d PROD || true
-          echo "Tag deleted"
-          git push origin $TEMP
-          git checkout $branch_commit_ID
-          git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
-          cd test.git
-          git checkout $branch_commit_ID
-        fi
-        git tag -d PROD
-        git tag PROD -m "New tag is created"
-        git push origin :refs/tags/PROD # delete the tag remotely
-        git push origin PROD
-        echo "PROD tag is created successfully"
-        cd ../..
-        rm -rf TEMP
-
+    - name: Check if commit/branch exists
+      uses: actions/github-script@v4
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const branchCommitId = "${{ github.event.inputs.commit-ID }}";
+          const { context, github } = require('@actions/github');
+          const octokit = new github.getOctokit("${{ secrets.GITHUB_TOKEN }}");
+          try {
+            const response = await octokit.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: branchCommitId
+            });
+            console.log(`Commit ${branchCommitId} exists`);
+          } catch (error) {
+            console.log(`Error: ${branchCommitId} is not a valid commit or branch`);
+            process.exit(1);
+          }
