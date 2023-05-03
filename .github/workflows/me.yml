@@ -1,21 +1,34 @@
-name: Create PROD tag
+name: My Workflow
 
 on:
   push:
-    branches:
-      - test
+   branches: [test]
+  workflow_dispatch:
+    inputs:
+      commit-ID:
+        description: 'Enter the commit ID'
+        required: true
+        default: '' 
+        type: text
+      rename:
+        description: 'Do you want to rename the tag for backup'
+        required: true 
+        type: string
+        options:
+          - 'Yes'
+          - 'No'
 
 jobs:
-  create-tag:
+  my-job:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
       with:
-          ref: ${{ github.event.inputs.test }}
-    - name: Run shell script
+      ref: ${{ github.event.inputs.test }}
+    - name: Set executable permission
+      run: chmod +x ./script.sh
+    - name: Run script
       run: |
-        #!/bin/bash
-        rm -rf TEMP
-        mkdir TEMP # Creating the temporary directory
-        cd TEMP # Get inside the directory
-        git init # Initialise the git
+        ./script.sh "${{ github.event.inputs.commit-ID }}" "${{ github.event.inputs.rename }}"
