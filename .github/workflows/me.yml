@@ -1,27 +1,39 @@
-name: Check commit/branch
+name: Check Commit ID or Branch
 
-on: [workflow_dispatch]
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
 
 jobs:
-  check-commit-branch:
+  check-commit-id-or-branch:
     runs-on: ubuntu-latest
     steps:
-    - name: Check if commit/branch exists
-      uses: actions/github-script@v4
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const branchCommitId = "${{ github.event.inputs.commit-ID }}";
-          const { context, github } = require('@actions/github');
-          const octokit = new github.getOctokit("${{ secrets.GITHUB_TOKEN }}");
-          try {
-            const response = await octokit.repos.getCommit({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: branchCommitId
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Check commit ID or branch
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const ref = process.env.GITHUB_REF;
+            const octokit = require('@octokit/rest')();
+            octokit.authenticate({
+              type: 'token',
+              token: process.env.GITHUB_TOKEN
             });
-            console.log(`Commit ${branchCommitId} exists`);
-          } catch (error) {
-            console.log(`Error: ${branchCommitId} is not a valid commit or branch`);
-            process.exit(1);
-          }
+            const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+            let sha;
+            try {
+              sha = await octokit.git.getRef({
+                owner: owner,
+                repo: repo,
+                ref: ref
+              });
+              console.log(`Commit ID or branch '${ref}' found: ${sha.data.object.sha}`);
+            } catch (error) {
+              console.log(`Commit ID or branch '${ref}' not found: ${error.message}`);
+              process.exit(1);
+            });
