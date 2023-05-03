@@ -18,7 +18,7 @@ jobs:
         cd TEMP # Get inside the directory
         git init # Initialise the git
         git clone --mirror GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
-cd test.git # Create a copy of git repo (all branches,tags & history)
+        cd test.git # Create a copy of git repo (all branches,tags & history)
         cd test.git
         branch_commit_ID="${{ github.ref }}"
         if ! git rev-parse --verify "$branch_commit_ID" >/dev/null 2>&1 #Validates the commit ID or Branch name
@@ -42,7 +42,7 @@ cd test.git # Create a copy of git repo (all branches,tags & history)
         fi
         cd ..
         GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
-cd test.git
+        cd test.git
         cd test
         git checkout $branch_commit_ID
         if [ "$answer" == "yes" ]
@@ -57,7 +57,7 @@ cd test.git
           git push origin $TEMP
           git checkout $branch_commit_ID
           GIT_TERMINAL_PROMPT=0 git clone https://${{ secrets.SECRET }}@github.com/HsantoshaKumara/test.git
-cd test.git
+          cd test.git
           git checkout $branch_commit_ID
         fi
         git tag -d PROD
