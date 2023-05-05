@@ -15,7 +15,7 @@ jobs:
       - name: run
         run: |
          git ls-remote --heads 
-         branch_commit_ID="test"
+         branch_commit_ID="4a01d0457cad665d8bdc27b3fb31589d9b18191f"
          if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
          then
          echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
