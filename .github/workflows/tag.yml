@@ -2,21 +2,21 @@
 name: Tag-Workflow-with-suffix
 on:
   push:
-   branches: [tag/test]
+   branches: [test]
 
 jobs:
   my-job:
-    runs-on: [ code-2xlarge ]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 10
+        
 
       - name: run
         run: |
          git ls-remote --heads >/dev/null 2>&1
-         branch_commit_ID="559e131"
+         branch_commit_ID="51cc030"
          if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
          then
          echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
