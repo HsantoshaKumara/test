@@ -50,7 +50,7 @@ jobs:
          git checkout $test
          if [ "$answer" == "yes" ]
          then
-         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" 
          git fetch origin
 
          git checkout tags/dummy
