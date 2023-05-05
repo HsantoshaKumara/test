@@ -47,7 +47,7 @@ jobs:
          echo " Tag will not be renamed "
          fi
 
-         git checkout $branch_commit_ID
+         git checkout $test
          if [ "$answer" == "yes" ]
          then
          git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
