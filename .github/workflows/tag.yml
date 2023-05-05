@@ -19,8 +19,7 @@ jobs:
          if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
          then
          echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
-         else
-         echo " $branch_commit_ID is valid commit ID or Branch name"
+         exit 0
          fi
          answer="yes"
 
