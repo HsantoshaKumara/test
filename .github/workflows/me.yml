@@ -2,7 +2,7 @@ name: My Workflow
 
 on:
   push:
-   branches: [test]
+   branches: []
   workflow_dispatch:
     inputs:
       commit-ID:
