@@ -14,7 +14,7 @@ jobs:
 
       - name: run
         run: |
-         git ls-remote --heads >/dev/null 2>&1
+         git ls-remote --heads 
          branch_commit_ID="51cc030"
          if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
          then
