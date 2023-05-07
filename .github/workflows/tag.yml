@@ -49,6 +49,7 @@ jobs:
          else
          echo " Tag will not be renamed "
          fi
+         git config --global credential.helper git-credential-store
          git config --global user.email "santhumst@gmail.com"
          git config --global user.name "HsantoshaKumara"
          git checkout test
