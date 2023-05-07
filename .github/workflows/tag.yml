@@ -56,7 +56,7 @@ jobs:
          git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
          git fetch origin >/dev/null
          
-         git checkout dummy
+      
          echo " renaming the tag name.. "
          git tag -f $TEMP dummy
          echo " renamed to $TEMP "
