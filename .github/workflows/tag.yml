@@ -49,6 +49,8 @@ jobs:
          fi
 
          git checkout test
+         git config --global user.email "you@example.com"
+         git config --global user.name "Your Name"
          git tag dummy -m "new"
          git push origin dummy
          if [ "$answer" == "yes" ]
