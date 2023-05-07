@@ -49,11 +49,13 @@ jobs:
          fi
 
          git checkout test
+         git tag dummy -m "new"
+         git push origin dummy
          if [ "$answer" == "yes" ]
          then
          git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
          git fetch origin >/dev/null
-         git tag dummy -m "new"
+         
          git checkout dummy
          echo " renaming the tag name.. "
          git tag -f $TEMP dummy
