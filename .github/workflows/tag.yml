@@ -6,22 +6,25 @@ on:
 
 jobs:
   my-job:
-    runs-on: ubuntu-latest
+    runs-on: [ ubuntu:latest ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+        
+
 
       - name: run
         run: |
-         git ls-remote --heads 
-         branch_commit_ID="4a01d0457cad665d8bdc27b3fb31589d9b18191f"
+         git ls-remote --heads >/dev/null 2>&1
+         branch_commit_ID="05ffa1a82a6a81f67a6d43e01bce44511c6d7abf"
          if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
          then
          echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
          exit 0
+         else
+         echo " $branch_commit_ID is valid commit ID or Branch name"
          fi
-         answer="yes"
+         answer="no"
 
          while [ "$answer" != "yes" ] && [ "$answer" != "no" ]
          do
@@ -31,29 +34,27 @@ jobs:
          if [ "$answer" == "yes" ]
          then
 
-         suffix_name="22Q"
+         suffix_name="22B"
 
          TEMP="dummy-$suffix_name"
-         while git rev-parse --quiet --verify "refs/tags/$TEMP" >/dev/null
+         while git ls-remote --tags | grep -q $TEMP
          do
          echo " Error: $TEMP is already exists.. Please change the suffix name "
 
          exit 0
-
          done
-
          echo " Tag name changing to $TEMP "
          else
          echo " Tag will not be renamed "
          fi
 
-         git checkout $test
+         git checkout test
          if [ "$answer" == "yes" ]
          then
-         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" 
-         git fetch origin
+         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git fetch origin >/dev/null
 
-         git checkout tags/dummy
+         git checkout dummy
          echo " renaming the tag name.. "
          git tag -f $TEMP dummy
          echo " renamed to $TEMP "
@@ -61,11 +62,13 @@ jobs:
          git tag -d dummy || true
          echo " tag deleted "
          git push origin $TEMP
-         git checkout $branch_commit_ID
+         git checkout test
          fi
+         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git fetch origin >/dev/null
          git tag -d dummy
-         git tag dummy -m " New tag is created "
-         git push origin :refs/tags/dummy
-         git push origin dummy
+         git tag dummy -m "new tag"
+         git push  origin :refs/tags/dummy
+         git push  origin dummy
 
-         echo " PROD tag is created successfully "
+         echo " dummy tag is created succussfully "
