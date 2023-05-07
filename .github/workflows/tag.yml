@@ -77,4 +77,4 @@ jobs:
          git push  origin :refs/tags/dummy
          git push  origin dummy
 
-         echo " dummy tag is created succussfully "
+         echo " dummy tag is created succussfully   "
