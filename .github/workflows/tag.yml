@@ -10,9 +10,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-           ref: main
-           token: ${{ secrets.SECRET }}
+        
 
 
       - name: run
@@ -51,10 +49,7 @@ jobs:
          fi
 
          git checkout test
-         git config --global user.email "santhumst@gmail.com"
-         git config --global user.name "santosha"
-         git tag dummy -m "new"
-         git push origin dummy
+         
          if [ "$answer" == "yes" ]
          then
          git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
