@@ -47,7 +47,8 @@ jobs:
          else
          echo " Tag will not be renamed "
          fi
-
+         git config --global user.email "santhu@gmail.com"
+         git config --global user.name "santosha"
          git checkout test
          
          if [ "$answer" == "yes" ]
