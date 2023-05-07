@@ -51,7 +51,7 @@ jobs:
          git checkout test
          if [ "$answer" == "yes" ]
          then
-         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
          git fetch origin >/dev/null
 
          git checkout dummy
@@ -64,7 +64,7 @@ jobs:
          git push origin $TEMP
          git checkout test
          fi
-         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
          git fetch origin >/dev/null
          git tag -d dummy
          git tag dummy -m "new tag"
