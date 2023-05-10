@@ -1,11 +1,77 @@
-name: My Workflow
-on: [push]
+name: Tag-Workflow-with-suffix
+on:
+  workflow_dispatch:
+  push:
+   branches: main
 
 jobs:
-  build:
+  my-job:
     runs-on: ubuntu-latest
     steps:
-      - name: My Action
-        uses: my-org/my-action@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
-          param1: ${{ inputs.param1 }}
+          fetch-depth: 10
+
+      - name: run
+        run: |
+         git ls-remote --heads >/dev/null 2>&1
+         branch_commit_ID="${{ inputs.branch_commit_ID }}"
+         if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
+         then
+         echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
+         else
+         echo " $branch_commit_ID is valid commit ID or Branch name"
+         fi
+         answer="${{ inputs.answer }}"
+
+         while [ "$answer" != "yes" ] && [ "$answer" != "no" ]
+         do
+         echo " do you want to rename the tag? Please answer with 'yes' or 'no': "
+         exit 0
+         done
+         if [ "$answer" == "yes" ]
+         then
+
+         suffix_name="${{ inputs.suffix_name }}"
+
+         TEMP="dummy-$suffix_name"
+         while git rev-parse --quiet --verify "refs/tags/$TEMP" >/dev/null
+         do
+         echo " Error: $TEMP is already exists.. Please change the suffix name "
+
+         exit 0
+
+         done
+
+         echo " Tag name changing to $TEMP "
+         else
+         echo " Tag will not be renamed "
+         fi
+
+         git checkout $branch_commit_ID
+         if [ "$answer" == "yes" ]
+         then
+         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git fetch origin
+
+         git checkout tags/dummy
+         echo " renaming the tag name.. "
+         git tag -f $TEMP dummy
+         echo " renamed to $TEMP "
+         echo " deleting the tag.. "
+         git tag -d dummy || true
+         echo " tag deleted "
+         git push origin $TEMP
+         git checkout $branch_commit_ID
+         fi
+         git tag -d dummy
+         git tag dummy -m " New tag is created "
+         git push origin :refs/tags/dummy
+         git push origin dummy
+
+         echo " dummy tag is created successfully "
+      env:
+        branch_commit_ID: ${{ inputs.branch_commit_ID }}
+        answer: ${{ inputs.answer }}
+        suffix_name: ${{ inputs.suffix_name }}
