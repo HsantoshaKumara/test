@@ -71,6 +71,6 @@ jobs:
 
          echo " dummy tag is created successfully "
         env:
-        branch_commit_ID: ${{ inputs.branch_commit_ID }}
-        answer: ${{ inputs.answer }}
-        suffix_name: ${{ inputs.suffix_name }}
+        branch_commit_ID: ${{ branch_commit_ID }}
+        answer: ${{ answer }}
+        suffix_name: ${{ suffix_name }}
