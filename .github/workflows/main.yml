@@ -23,12 +23,10 @@ on:
         default: ''
         type: text
 
-  push:
-    branches:
-     - tag/test
+ 
 jobs:
   my-job:
-    runs-on: [ code-2xlarge ]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -69,7 +67,7 @@ jobs:
          echo " Tag will not be renamed "
          fi
 
-         git checkout tag/test
+         #git checkout tag/test
          if [ "$answer" == "yes" ]
          then
          git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
@@ -88,7 +86,7 @@ jobs:
 
          fi
 
-         git checkout  tag/test
+         #git checkout  tag/test
          git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
          git fetch origin >/dev/null
 
