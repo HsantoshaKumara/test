@@ -1,5 +1,5 @@
 ---
-name: Tag-Workflow-with-suffix
+name: Tag-Workflow-1
 on:
 
   workflow_dispatch:
@@ -70,7 +70,7 @@ jobs:
          #git checkout tag/test
          if [ "$answer" == "yes" ]
          then
-         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
          git fetch origin >/dev/null
 
          git checkout dummy
@@ -87,7 +87,7 @@ jobs:
          fi
 
          #git checkout  tag/test
-         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
          git fetch origin >/dev/null
 
 
