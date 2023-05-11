@@ -1,32 +1,97 @@
-name: github tag
-
-run-name: create tag for commit
-
+---
+name: Tag-Workflow-with-suffix
 on:
+
   workflow_dispatch:
+
     inputs:
       commit-ID:
-        description: 'enter the commit ID'
+        description: Enter commit ID or Branch name
         required: true
-        default: '' 
+        default: ''
         type: text
-env:
-  COMMIT_ID: ${{github.event.inputs.commit-ID}}        
-      
+      rename:
+        description: Do you want to rename the tag? say yes or no
+        required: true
+        type: string
+        options:
+          - yes
+          - no
+      suffix:
+        description: Enter suffix name to tag
+        required: true
+        default: ''
+        type: text
 
+  push:
+    branches:
+     - tag/test
 jobs:
-  
-
-      
-
-  create-tag:
-    
-    
-    runs-on: ubuntu-latest-16-cores
-    timeout-minutes: 200
-    
+  my-job:
+    runs-on: [ code-2xlarge ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: creating tag 
-        run: bash ${GITHUB_WORKSPACE}/script.sh $COMMIT_ID
+
+
+
+      - name: run
+        run: |
+         #!/bin/bash
+
+         git ls-remote --heads >/dev/null 2>&1
+         branch_commit_ID="${{ github.event.inputs.commit-ID }}"
+         if ! git rev-parse --verify $branch_commit_ID >/dev/null 2>&1
+         then
+         echo "Error: $branch_commit_ID is not a valid commit ID or Branch name"
+         exit 0
+         else
+         echo " $branch_commit_ID is valid commit ID or Branch name"
+         fi
+         answer="${{ github.event.inputs.rename }}"
+         while [ "$answer" != "yes" ] && [ "$answer" != "no" ]
+         do
+         echo " do you want to rename the tag? Please answer with 'yes' or 'no': "
+         exit 0
+         done
+         if [ "$answer" == "yes" ]
+         then
+
+         suffix_name="${{ github.event.inputs.suffix }}"
+         TEMP="dummy-$suffix_name"
+         while git ls-remote --tags | grep -q $TEMP
+         do
+         echo " Error: $TEMP is already exists.. Please change the suffix name "
+         exit 0
+         done
+         echo " Tag name changing to $TEMP "
+         else
+         echo " Tag will not be renamed "
+         fi
+
+         git checkout tag/test
+         if [ "$answer" == "yes" ]
+         then
+         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git fetch origin >/dev/null
+
+         git checkout dummy
+         echo " renaming the tag name.. "
+         git tag -f $TEMP dummy
+         echo " renamed to $TEMP "
+         echo " deleting the tag.. "
+         git tag -d dummy || true
+         echo " tag deleted "
+
+         git push origin $TEMP
+
+
+         fi
+
+         git checkout  tag/test
+         git config --local remote.origin.fetch "+refs/tags/:refs/tags/" >/dev/null 2>&1
+         git fetch origin >/dev/null
+
+
+         git tag -d dummy && git push origin --delete dummy ; git tag dummy $branch_commit_ID && git push origin dummy
+         echo " dummy tag is created succussfully "
