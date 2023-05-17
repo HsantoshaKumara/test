@@ -86,10 +86,10 @@ jobs:
 
          fi
          
-         git fetch $branch_commit_ID
+         git fetch origin $branch_commit_ID
          git branch dumm FETCH_HEAD
          git checkout dumm
-         git 
+         
 
 
          
