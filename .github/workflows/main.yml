@@ -85,11 +85,15 @@ jobs:
 
 
          fi
+         
+         git fetch $branch_commit_ID
+         git branch dumm FETCH_HEAD
+         git checkout dumm
+         git 
 
-         #git checkout  tag/test
-         git config --local remote.origin.fetch "+refs/tags/*:refs/tags/*" >/dev/null 2>&1
-         git fetch origin >/dev/null
 
-
-         git tag -d dummy && git push origin --delete dummy ; git tag dummy $branch_commit_ID && git push origin dummy
+         
+         git tag dummy 
+         git push origin --delete dummy 
+         git push origin dummy
          echo " dummy tag is created succussfully "
