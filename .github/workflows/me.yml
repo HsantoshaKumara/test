@@ -1,16 +1,1 @@
-name: Create PROD tag
 
-on:
-  push:
-    branches:
-      - test
-
-jobs:
-  create-tag:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-          ref: ${{ github.event.inputs.test }}
-    - name: Run shell script
-      run: |
