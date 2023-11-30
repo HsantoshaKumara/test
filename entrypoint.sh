@@ -77,7 +77,7 @@ lets_wait() {
 
 api() {
   path=$1; shift
-  if response=$(curl --fail -sSL \
+  if response=$(curl /
       -u h-kumara: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 -X POST -H "Accept: application/vnd.github.v3+json"  https://github.ecodesamsung.com/api/v3/repos/Bixby-Server/github-action-automation//actions/$path" \
       "$@")
   then
