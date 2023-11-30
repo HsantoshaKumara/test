@@ -78,10 +78,7 @@ lets_wait() {
 api() {
   path=$1; shift
   if response=$(curl --fail -sSL \
-      "${GITHUB_API_URL}/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/$path" \
-      -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
-      -H 'Accept: application/vnd.github.v3+json' \
-      -H 'Content-Type: application/json' \
+      -u h-kumara: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 -X POST -H "Accept: application/vnd.github.v3+json"  https://github.ecodesamsung.com/api/v3/repos/Bixby-Server/github-action-automation//actions/$path" \
       "$@")
   then
     echo "$response"
