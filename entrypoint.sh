@@ -82,7 +82,24 @@ lets_wait() {
   echo >&2 "Sleeping for $interval seconds"
   sleep "$interval"
 }
-
+api() {
+  path=$1; shift
+  if response=$(curl /
+      '-u h-kumara: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 -X POST -H "Accept: application/vnd.github.v3+json"  https://github.ecodesamsung.com/api/v3/repos/Bixby-Server/github-action-automation/actions/$path' \
+      "$@")
+  then
+    echo "$response"
+  else
+    echo >&2 "api failed:"
+    echo >&2 "path: $path"
+    echo >&2 "response: $response"
+    if [[ "$response" == *'"Server Error"'* ]]; then 
+      echo "Server error - trying again"
+    else
+      exit 1
+    fi
+  fi
+}
 # Return the ids of the most recent workflow runs, optionally filtered by user
 get_workflow_runs() {
   since=${1:?}
