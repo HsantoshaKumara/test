@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-
-
-
-}
 GITHUB_API_URL="${API_URL:-https://github.ecodesamsung.com/api/v3}"
 GITHUB_SERVER_URL="${SERVER_URL:-https://github.ecodesamsung.com/api/v3}"
 
