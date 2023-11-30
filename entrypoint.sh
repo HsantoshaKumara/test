@@ -1,18 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-usage_docs() {
-  echo ""
-  echo "You can use this Github Action with:"
-  echo "- uses: convictional/trigger-workflow-and-wait"
-  echo "  with:"
-  echo "    owner: keithconvictional"
-  echo "    repo: myrepo"
-  echo "    github_token: \${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}"
-  echo "    workflow_file_name: main.yaml"
+
 }
-GITHUB_API_URL="${API_URL:-https://github.ecodesamsung.com/api}"
-GITHUB_SERVER_URL="${SERVER_URL:-https://github.ecodesamsung.com/api}"
+GITHUB_API_URL="${API_URL:-https://github.ecodesamsung.com/api/v3}"
+GITHUB_SERVER_URL="${SERVER_URL:-https://github.ecodesamsung.com/api/v3}"
 
 validate_args() {
   wait_interval=10 # Waits for 10 seconds
@@ -201,7 +193,7 @@ wait_for_workflow_to_finish() {
     echo "Yes, success"
   else
     # Alternative "failure"
-    echo "Conclusion is not success, it's [${conclusion}]."
+    echo "Conclusion is not success, its [${conclusion}]."
 
     if [ "${propagate_failure}" = true ]
     then
