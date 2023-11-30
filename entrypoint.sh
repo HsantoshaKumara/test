@@ -108,7 +108,7 @@ get_workflow_runs() {
 
   echo "Getting workflow runs using query: ${query}" >&2
 
-  api "workflows/${INPUT_WORKFLOW_FILE_NAME}/runs?${query}" |
+  curl -u h-kumara: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 -X POST -H "Accept: application/vnd.github.v3+json"  https://github.ecodesamsung.com/api/v3/repos/Bixby-Server/github-action-automation/actions/workflows/action-trigger.yaml/runs?${query}" |
   jq -r '.workflow_runs[].id' |
   sort # Sort to ensure repeatable order, and lexicographically for compatibility with join
 }
@@ -123,7 +123,7 @@ trigger_workflow() {
   echo >&2 "  workflows/${INPUT_WORKFLOW_FILE_NAME}/dispatches"
   echo >&2 "  {\"ref\":\"${ref}\",\"inputs\":${client_payload}}"
 
-  api "workflows/${INPUT_WORKFLOW_FILE_NAME}/dispatches" \
+  curl -u h-kumara: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 -X POST -H "Accept: application/vnd.github.v3+json"  https://github.ecodesamsung.com/api/v3/repos/Bixby-Server/github-action-automation/actions/workflows/action-trigger.yaml/dispatches" \
     --data "{\"ref\":\"${ref}\",\"inputs\":${client_payload}}"
 
   NEW_RUNS=$OLD_RUNS
